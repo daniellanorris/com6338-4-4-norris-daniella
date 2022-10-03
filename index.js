@@ -14,27 +14,21 @@ var words = [
   
   
   var incorrect
-  var wins = 0
-  var losses = 0
-  var score = 0
-  var remaining = 10
-  var winsEl = document.getElementById('wins')
-  var lossesEl = document.getElementById('losses')
+  var wins
+  var losses 
+  var remainingTries = 10
+  var winsEl = wins
+  var lossesEl = losses
   var previousEl = document.getElementById('previous-word')
   var incorrectEl = document.getElementById('incorrect-letters')
   var remainingEl = document.getElementById('remaining-guesses')
-  var scoreEl = document.getElementById('score')
-  var wordGuess = document.getElementById('word-to-guess')
-  var key = e.key.toLowerCase()
-  var startBtn = document.querySelector('.game button')
-  var answerArray = [];
+  var wordGuess = document.getElementById('words-to-guess')
+  var correctArray = [];
+  var incorrectArray = [];
   
   document.onkeyup = function(e) {
+    var key = e.key.toLowerCase()
     console.log(e.key)
-    var wordGuess = words[Math.floor(Math.random() * words.length)];
-    for(var i = 0; i < wordGuess.length; i++) {
-      answerArray[i] = "_";
-    }
   
     var remainingLetters = wordGuess.length;
   
@@ -59,24 +53,29 @@ var words = [
         }
   
       } 
-      if(newArray === wordGuess) {
+      if (newArray === wordGuess) {
         wins++
       }
       losses++
-  
+  loadFunction()
     
   }
   
-  startBtn.onclick = function() {
-    previousEl.textContent = ""
-    incorrectEl.textContent = ""
-    scoreEl.textContent = ""
-    wordGuess.textContent = ""
-    winsEl.textContent = wins
-    lossesEl.textContent = losses
-    remainingEl.textContent = remaining
+    window.onload = function loadFunction() {
+        previousEl.textContent = ""
+        incorrectEl.textContent = ""
+        remainingEl.textContent = remainingTries
+
+        var wordGuess = words[Math.floor(Math.random() * words.length)]; 
+
+        var underScoreWord = wordGuess.replaceAll(' ', '_');
+        wordGuess.textContent = underScoreWord;
+        console.log(underScoreWord);
+
+        }
+        
   
-    }
+    
       
       
   

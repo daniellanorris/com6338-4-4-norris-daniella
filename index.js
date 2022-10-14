@@ -1,81 +1,89 @@
 var words = [
-    'bananas',
-    'grapes',
-    'carousel',
-    'milkshake',
-    'javascript',
-    'limousine',
-    'chocolate',
-    'programming',
-    'meatloaf',
-    'ukulele',
-    'mango'
-  ]
-  
-  
-  var incorrect
-  var wins
-  var losses 
-  var remainingTries = 10
-  var winsEl = wins
-  var lossesEl = losses
-  var previousEl = document.getElementById('previous-word')
-  var incorrectEl = document.getElementById('incorrect-letters')
-  var remainingEl = document.getElementById('remaining-guesses')
-  var wordGuess = document.getElementById('words-to-guess')
-  var correctArray = [];
-  var incorrectArray = [];
-  
-  document.onkeyup = function(e) {
-    var key = e.key.toLowerCase()
-    console.log(e.key)
-  
-    var remainingLetters = wordGuess.length;
-  
-    while(remainingLetters > 0) {
-      newArray.textContent = answerArray.join("");
-      
-      for(var j = 0; j < 10; j++) {
-        if(wordGuess[j] === key) {
-          newArray[j] = key;
-  
-          } else {
-            incorrect++
-            incorrectEl.textContent = key
-            remaining--
-            remainingEl.textContent = remaining
-  
-          }
-          previousEl.textContent = previousEl
-  
-          scoreEl.textContent = Math.round(wins/ (wins+losses) * 100)
-          
-        }
-  
-      } 
-      if (newArray === wordGuess) {
-        wins++
-      }
-      losses++
-  loadFunction()
-    
+  'bananas',
+  'grapes',
+  'carousel',
+  'milkshake',
+  'javascript',
+  'limousine',
+  'chocolate',
+  'programming',
+  'meatloaf',
+  'ukulele',
+  'mango'
+]
+
+var incorrect
+var wins = 0
+var losses = 0
+var winsEl = document.getElementById('wins')
+var lossesEl = document.getElementById('losses')
+var remainingTries = 10
+var previousEl = document.getElementById('previous-word')
+var incorrectEl = document.getElementById('incorrect-letters')
+var remainingEl = document.getElementById('remaining-guesses')
+var correctArray = []
+var incorrectArray = []
+var wordGuess = document.getElementById('word-to-guess');
+var newWordGuess;
+
+function loadFunction() {
+  remainingTries = 10;
+  incorrectEl.textContent = ""
+  remainingEl.textContent = remainingTries;
+  newWordGuess = words[Math.floor(Math.random() * words.length)];
+  var underScore = "";
+  incorrectArray = [];
+  correctArray = [];
+
+  for (var i = 0; i < newWordGuess.length; i++) {
+    underScore += "_";
   }
-  
-    window.onload = function loadFunction() {
-        previousEl.textContent = ""
-        incorrectEl.textContent = ""
-        remainingEl.textContent = remainingTries
 
-        var wordGuess = words[Math.floor(Math.random() * words.length)]; 
+  wordGuess.textContent = underScore;
 
-        var underScoreWord = wordGuess.replaceAll(' ', '_');
-        wordGuess.textContent = underScoreWord;
-        console.log(underScoreWord);
+}
 
-        }
-        
+loadFunction()
+
+document.body.onkeyup = function (e) {
+  var key = e.key.toLowerCase()
+  console.log(e.key)
+
+  // check if letter is in word 
+  if (newWordGuess.includes(key) && !correctArray.includes(key)) {
+    correctArray.push(key)
+    /* looping over each variable, checking if correct/incorrect */
+    var underScore = "";
+    for (var i = 0; i < newWordGuess.length; i++) {
+      console.log(newWordGuess[i])
+      if (correctArray.includes(newWordGuess[i])) {
+        underScore += newWordGuess[i];
+      } else {
+        underScore += "_"
+      }
+    }
+
+    wordGuess.textContent = underScore;
+  } else if(!incorrectArray.includes(key) && !newWordGuess.includes(key)) {
+    incorrectArray.push(key);
+    remainingTries--;
+    remainingEl.textContent = remainingTries;
+    incorrectEl.textContent = incorrectArray;
+  }
+
+  if(wordGuess.textContent === newWordGuess) {
+    wins++;
+    winsEl.textContent = wins;
+    previousEl.textContent = newWordGuess;
   
-    
-      
-      
+  loadFunction()
   
+  }  else if(remainingTries <= 0) {
+    losses++;
+    lossesEl.textContent = losses;
+    previousEl.textContent = newWordGuess;
+  
+  loadFunction()
+   
+  }
+}
